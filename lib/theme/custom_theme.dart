@@ -17,7 +17,8 @@ class CustomTheme {
           800: Palette.red100,
           900: Palette.red100
         }),
-        accentColor: Palette.red500,
+        // accentColor: Palette.red500,
+        colorSchemeSeed: Palette.red500,
         scaffoldBackgroundColor: Palette.almostBlack,
         appBarTheme:
             AppBarTheme(elevation: 0, backgroundColor: Palette.almostBlack),

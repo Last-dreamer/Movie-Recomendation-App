@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_recomendation/features/movie_flow/movie_flow.dart';
 import 'package:movie_recomendation/theme/custom_theme.dart';
 
 void main() {
@@ -14,10 +15,6 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         darkTheme: CustomTheme.darkTheme(context),
         themeMode: ThemeMode.dark,
-        home: const Scaffold(
-          body: Center(
-            child: Text("movie recomendation app ...."),
-          ),
-        ));
+        home: const MovieFlow());
   }
 }
