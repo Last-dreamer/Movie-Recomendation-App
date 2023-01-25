@@ -16,6 +16,6 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         darkTheme: CustomTheme.darkTheme(context),
         themeMode: ThemeMode.dark,
-        home: const MovieFlow());
+        home: MovieFlow());
   }
 }
