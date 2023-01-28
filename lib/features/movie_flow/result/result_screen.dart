@@ -16,52 +16,61 @@ class ResultScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const CoverImage(),
-                    Positioned(
-                      width: MediaQuery.of(context).size.width,
-                      bottom: -(movieHeight / 2),
-                      child: MovieImageDetails(
-                          movie: ref.read(movieFlowControllerProvider).movie,
-                          movieHeight: movieHeight),
+        appBar: AppBar(),
+        body: ref.watch(movieFlowControllerProvider).movie.when(
+            data: (movie) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            CoverImage(movie: movie),
+                            Positioned(
+                              width: MediaQuery.of(context).size.width,
+                              bottom: -(movieHeight / 2),
+                              child: MovieImageDetails(
+                                  movie: movie, movieHeight: movieHeight),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: movieHeight / 2,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            movie.overview,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: movieHeight / 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    ref.watch(movieFlowControllerProvider).movie.overview,
-                    style: Theme.of(context).textTheme.bodyText2,
                   ),
+                  PrimaryButton(
+                      onPress: () => Navigator.pop(context),
+                      text: "Find Another Movie"),
+                  const SizedBox(
+                    height: kMediumSpacing,
+                  )
+                ],
+              );
+            },
+            error: (e, s) => const Center(
+                  child: Text("an error occured"),
                 ),
-              ],
-            ),
-          ),
-          PrimaryButton(
-              onPress: () => Navigator.pop(context),
-              text: "Find Another Movie"),
-          const SizedBox(
-            height: kMediumSpacing,
-          )
-        ],
-      ),
-    );
+            loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                )));
   }
 }
 
 class CoverImage extends StatelessWidget {
-  const CoverImage({super.key});
+  const CoverImage({super.key, required this.movie});
+
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +87,10 @@ class CoverImage extends StatelessWidget {
               ]).createShader(Rect.fromLTRB(0, 0, rec.width, rec.height));
         },
         blendMode: BlendMode.dstIn,
-        child: const Placeholder(),
+        child: Image.network(
+          movie.backdropPath ?? "",
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -101,7 +113,10 @@ class MovieImageDetails extends ConsumerWidget {
             SizedBox(
               width: 100,
               height: movieHeight,
-              child: const Placeholder(),
+              child: Image.network(
+                movie.posterPath ?? "",
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(
               width: kMediumSpacing,

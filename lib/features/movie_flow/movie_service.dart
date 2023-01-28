@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_recomendation/features/movie_flow/genre/genre_entity.dart';
+
 import 'package:movie_recomendation/features/movie_flow/movie_repository.dart';
 import 'package:movie_recomendation/features/movie_flow/result/movie.dart';
 
@@ -15,8 +15,12 @@ final movieServiceProvider = Provider<TMDBMovieService>((ref) {
 abstract class MovieService {
   Future<List<Genre>> getGenres();
   Future<Movie> getRecomendedMovie(
-      double rating, int yearsBack, String date, List<Genre> genres,
-      [DateTime? yearsBackFromDate]);
+    double rating,
+    int yearsBack,
+    List<Genre> genres, {
+    DateTime? yearsBackFromDate,
+    String date,
+  });
 }
 
 class TMDBMovieService extends MovieService {
@@ -31,8 +35,8 @@ class TMDBMovieService extends MovieService {
 
   @override
   Future<Movie> getRecomendedMovie(
-      double rating, int yearsBack, String date, List<Genre> genres,
-      [DateTime? yearsBackFromDate]) async {
+      double rating, int yearsBack, List<Genre> genres,
+      {DateTime? yearsBackFromDate, String? date}) async {
     final date = yearsBackFromDate ?? DateTime.now();
     final year = date.year - yearsBack;
     final genreIds = genres.map((e) => e.id).toList().join(",");

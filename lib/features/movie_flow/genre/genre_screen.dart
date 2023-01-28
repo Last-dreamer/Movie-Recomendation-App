@@ -23,27 +23,34 @@ class GenreScreen extends ConsumerWidget {
           children: [
             Text("Let's start with genre", style: theme.textTheme.headline5),
             Expanded(
-                child: ListView.separated(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: kListItemSpacing),
-                    itemBuilder: (context, index) {
-                      var genre =
-                          ref.watch(movieFlowControllerProvider).genres[index];
+                child: ref.watch(movieFlowControllerProvider).genres.when(
+                    data: (genres) {
+                      return ListView.separated(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: kListItemSpacing),
+                          itemBuilder: (context, index) {
+                            var genre = genres[index];
 
-                      return ListCard(
-                        genre: genre,
-                        onTap: () => ref
-                            .read(movieFlowControllerProvider.notifier)
-                            .toggleSelected(genre),
-                      );
+                            return ListCard(
+                              genre: genre,
+                              onTap: () => ref
+                                  .read(movieFlowControllerProvider.notifier)
+                                  .toggleSelected(genre),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: kListItemSpacing,
+                            );
+                          },
+                          itemCount: genres.length);
                     },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: kListItemSpacing,
-                      );
-                    },
-                    itemCount:
-                        ref.watch(movieFlowControllerProvider).genres.length)),
+                    error: (e, s) => const Center(
+                          child: Text("an error occured"),
+                        ),
+                    loading: () => const Center(
+                          child: CircularProgressIndicator(),
+                        ))),
             PrimaryButton(
                 onPress:
                     ref.read(movieFlowControllerProvider.notifier).nextPage,

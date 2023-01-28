@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 
@@ -53,14 +54,15 @@ class MovieEntity extends Equatable {
   }
 
   factory MovieEntity.fromMap(Map<String, dynamic> map) {
+    log("testing map ${map['poster_path']}");
     return MovieEntity(
       title: map['title'] ?? '',
       overview: map['overview'] ?? '',
       voteAverage: map['voteAverage'] ?? 0,
-      genreIds: List<int>.from(map['genreIds']),
+      genreIds: List<int>.from(map['genre_ids']),
       releaseDate: map['releaseDate'] ?? '',
-      backdropPath: map['backdropPath'] ?? '',
-      posterpath: map['posterpath'] ?? '',
+      backdropPath: map['backdrop_path'] ?? '',
+      posterpath: map['poster_path'] ?? '',
     );
   }
 

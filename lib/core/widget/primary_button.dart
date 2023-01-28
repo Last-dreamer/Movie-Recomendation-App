@@ -6,10 +6,12 @@ class PrimaryButton extends StatelessWidget {
       {super.key,
       required this.onPress,
       required this.text,
+      this.isLoading = false,
       this.width = double.infinity});
 
   final VoidCallback onPress;
   final String text;
+  final bool isLoading;
   final double width;
 
   @override
@@ -24,7 +26,14 @@ class PrimaryButton extends StatelessWidget {
         ),
         onPressed: onPress,
         child: Row(
-          children: [Text(text, style: Theme.of(context).textTheme.button)],
+          children: [
+            if (isLoading)
+              CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onPrimary,
+              )
+            else
+              Text(text, style: Theme.of(context).textTheme.button)
+          ],
         ),
       ),
     );
