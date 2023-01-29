@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Movie Recomenation App',
         darkTheme: CustomTheme.darkTheme(context),
         themeMode: ThemeMode.dark,
-        home: MovieFlow());
+        home: const MovieFlow());
   }
 }

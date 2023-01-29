@@ -62,6 +62,7 @@ class YearsBackScreen extends ConsumerWidget {
                   await ref
                       .read(movieFlowControllerProvider.notifier)
                       .getRecommendedMovie();
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).push(ResultScreen.route());
                 },
                 isLoading: ref.watch(movieFlowControllerProvider).movie

@@ -7,6 +7,8 @@ import 'package:movie_recomendation/features/movie_flow/rating/rating_screen.dar
 import 'package:movie_recomendation/features/movie_flow/years_back/years_back_screen.dart';
 
 class MovieFlow extends ConsumerWidget {
+  const MovieFlow({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PageView(
