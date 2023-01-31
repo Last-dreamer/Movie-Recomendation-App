@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Movie Recomenation App',
-        darkTheme: CustomTheme.darkTheme(context),
-        themeMode: ThemeMode.dark,
-        home: const MovieFlow());
+      title: 'Movie Recomenation App',
+      darkTheme: CustomTheme.darkTheme(context),
+      themeMode: ThemeMode.dark,
+      home: const MovieFlow(),
+    );
   }
 }

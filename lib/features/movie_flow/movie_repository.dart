@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_recomendation/core/envirement_variable.dart';
+import 'package:movie_recomendation/core/failure.dart';
 import 'package:movie_recomendation/features/movie_flow/genre/genre_entity.dart';
 import 'package:movie_recomendation/features/movie_flow/result/movie_entity.dart';
 import 'package:movie_recomendation/main.dart';
@@ -22,12 +25,22 @@ class TMDBMovieRespository implements MovieRepository {
 
   @override
   Future<List<GenreEntity>> getMovieGenres() async {
-    var response = await dio.get("genre/movie/list",
-        queryParameters: {"api_key": api, "language": "en-US"});
+    try {
+      var response = await dio.get("genre/movie/list",
+          queryParameters: {"api_key": api, "language": "en-US"});
 
-    final result = List<Map<String, dynamic>>.from(response.data['genres']);
-    final genres = result.map((e) => GenreEntity.fromMap(e)).toList();
-    return genres;
+      final result = List<Map<String, dynamic>>.from(response.data['genres']);
+      final genres = result.map((e) => GenreEntity.fromMap(e)).toList();
+      return genres;
+    } on DioError catch (e) {
+      if (e.error == SocketException) {
+        throw Failure(message: "No Internet Connection", exception: e);
+      }
+
+      throw Failure(
+          message: e.response?.statusMessage ?? "Something went wrong...",
+          code: e.response?.statusCode);
+    }
   }
 
   @override
