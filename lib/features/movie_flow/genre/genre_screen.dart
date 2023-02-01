@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_recomendation/core/constants.dart';
+import 'package:movie_recomendation/core/failure.dart';
+import 'package:movie_recomendation/core/widget/failure_screen.dart';
 import 'package:movie_recomendation/core/widget/primary_button.dart';
 import 'package:movie_recomendation/features/movie_flow/genre/list_card.dart';
 import 'package:movie_recomendation/features/movie_flow/movie_flow_controller.dart';
@@ -45,9 +47,13 @@ class GenreScreen extends ConsumerWidget {
                           },
                           itemCount: genres.length);
                     },
-                    error: (e, s) => const Center(
-                          child: Text("an error occured"),
-                        ),
+                    error: (e, s) {
+                      if (e is Failure) {
+                        return FailureBody(message: e.message);
+                      }
+                      return const FailureBody(
+                          message: "Something went wrong with our side .....");
+                    },
                     loading: () => const Center(
                           child: CircularProgressIndicator(),
                         ))),
