@@ -16,12 +16,8 @@ final movieServiceProvider = Provider<TMDBMovieService>((ref) {
 abstract class MovieService {
   Future<Result<List<Genre>, Failure>> getGenres();
   Future<Result<Movie, Failure>> getRecomendedMovie(
-    double rating,
-    int yearsBack,
-    List<Genre> genres, {
-    DateTime? yearsBackFromDate,
-    String date,
-  });
+      double rating, int yearsBack, List<Genre> genres,
+      {DateTime? yearsBackFromDate, String date});
 }
 
 class TMDBMovieService extends MovieService {

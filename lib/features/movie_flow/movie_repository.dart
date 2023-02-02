@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -33,6 +34,7 @@ class TMDBMovieRespository implements MovieRepository {
       final genres = result.map((e) => GenreEntity.fromMap(e)).toList();
       return genres;
     } on DioError catch (e) {
+      log("testing error ${e.error}");
       if (e.error == SocketException) {
         throw Failure(message: "No Internet Connection", exception: e);
       }
