@@ -6,7 +6,7 @@ class GenreEntity extends Equatable {
   final int id;
   final String name;
   const GenreEntity({
-    required this.id,
+    this.id = 0,
     required this.name,
   });
 
