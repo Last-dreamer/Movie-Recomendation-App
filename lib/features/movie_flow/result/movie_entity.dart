@@ -17,8 +17,8 @@ class MovieEntity extends Equatable {
     required this.voteAverage,
     required this.genreIds,
     required this.releaseDate,
-    required this.backdropPath,
-    required this.posterpath,
+    this.backdropPath = "",
+    this.posterpath = "",
   });
 
   MovieEntity copyWith({
