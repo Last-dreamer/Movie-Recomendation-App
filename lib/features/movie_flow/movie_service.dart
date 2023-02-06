@@ -8,7 +8,7 @@ import 'package:multiple_result/multiple_result.dart';
 import '../../core/failure.dart';
 import 'genre/genre.dart';
 
-final movieServiceProvider = Provider<TMDBMovieService>((ref) {
+final movieServiceProvider = Provider<MovieService>((ref) {
   final movieRepository = ref.watch(movieRepositoryProvider);
   return TMDBMovieService(movieRepository);
 });

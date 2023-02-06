@@ -94,7 +94,7 @@ class CoverImage extends StatelessWidget {
         },
         blendMode: BlendMode.dstIn,
         child: Image.network(
-          movie.backdropPath ?? "",
+          movie.backdropPath,
           fit: BoxFit.cover,
         ),
       ),
@@ -120,7 +120,7 @@ class MovieImageDetails extends ConsumerWidget {
               width: 100,
               height: movieHeight,
               child: Image.network(
-                movie.posterPath ?? "",
+                movie.posterPath,
                 fit: BoxFit.cover,
               ),
             ),
