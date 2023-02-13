@@ -58,9 +58,9 @@ class MovieEntity extends Equatable {
     return MovieEntity(
       title: map['title'] ?? '',
       overview: map['overview'] ?? '',
-      voteAverage: map['voteAverage'] ?? 0,
+      voteAverage: map['vote_average'] ?? 0,
       genreIds: List<int>.from(map['genre_ids']),
-      releaseDate: map['releaseDate'] ?? '',
+      releaseDate: map['release_date'] ?? '',
       backdropPath: map['backdrop_path'] ?? '',
       posterpath: map['poster_path'] ?? '',
     );

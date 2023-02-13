@@ -3,15 +3,68 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_recomendation/core/constants.dart';
 import 'package:movie_recomendation/core/failure.dart';
 import 'package:movie_recomendation/core/widget/failure_screen.dart';
+import 'package:movie_recomendation/core/widget/network_fading_image.dart';
 import 'package:movie_recomendation/core/widget/primary_button.dart';
 import 'package:movie_recomendation/features/movie_flow/movie_flow_controller.dart';
 import 'package:movie_recomendation/features/movie_flow/result/movie.dart';
 
+class ResultScreenAnimator extends StatefulWidget {
+  const ResultScreenAnimator({super.key});
+
+  @override
+  State<ResultScreenAnimator> createState() => _ResultScreenAnimatorState();
+}
+
+class _ResultScreenAnimatorState extends State<ResultScreenAnimator>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+
+    animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResultScreen(animationController: animationController);
+  }
+}
+
 class ResultScreen extends ConsumerWidget {
-  const ResultScreen({super.key});
+  ResultScreen({super.key, required this.animationController})
+      : titleOpacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+            parent: animationController, curve: const Interval(0, 0.3))),
+        genreOpacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+            parent: animationController, curve: const Interval(0.3, 0.4))),
+        ratingOpacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+            parent: animationController, curve: const Interval(0.4, 0.6))),
+        descriptionOpacity = Tween<double>(begin: 0, end: 1).animate(
+            CurvedAnimation(
+                parent: animationController, curve: const Interval(0.6, 0.8))),
+        buttonOpacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+            parent: animationController, curve: const Interval(0.8, 1)));
+
+  final AnimationController animationController;
+
+  final Animation<double> titleOpacity;
+  final Animation<double> genreOpacity;
+  final Animation<double> ratingOpacity;
+  final Animation<double> descriptionOpacity;
+  final Animation<double> buttonOpacity;
+
   static route({bool fullScreenDialog = true}) => MaterialPageRoute(
       fullscreenDialog: fullScreenDialog,
-      builder: (context) => const ResultScreen());
+      builder: (context) => const ResultScreenAnimator());
 
   final double movieHeight = 150;
 
@@ -34,7 +87,11 @@ class ResultScreen extends ConsumerWidget {
                               width: MediaQuery.of(context).size.width,
                               bottom: -(movieHeight / 2),
                               child: MovieImageDetails(
-                                  movie: movie, movieHeight: movieHeight),
+                                  titleOpacity: titleOpacity,
+                                  genreOpacity: genreOpacity,
+                                  ratingOpacity: ratingOpacity,
+                                  movie: movie,
+                                  movieHeight: movieHeight),
                             ),
                           ],
                         ),
@@ -43,9 +100,12 @@ class ResultScreen extends ConsumerWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            movie.overview,
-                            style: Theme.of(context).textTheme.bodyText2,
+                          child: FadeTransition(
+                            opacity: descriptionOpacity,
+                            child: Text(
+                              movie.overview,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
                           ),
                         ),
                       ],
@@ -93,10 +153,7 @@ class CoverImage extends StatelessWidget {
               ]).createShader(Rect.fromLTRB(0, 0, rec.width, rec.height));
         },
         blendMode: BlendMode.dstIn,
-        child: Image.network(
-          movie.backdropPath,
-          fit: BoxFit.cover,
-        ),
+        child: NetworkFadingImage(path: movie.backdropPath),
       ),
     );
   }
@@ -104,7 +161,16 @@ class CoverImage extends StatelessWidget {
 
 class MovieImageDetails extends ConsumerWidget {
   const MovieImageDetails(
-      {super.key, required this.movie, required this.movieHeight});
+      {super.key,
+      required this.movie,
+      required this.movieHeight,
+      required this.titleOpacity,
+      required this.genreOpacity,
+      required this.ratingOpacity});
+
+  final Animation<double> titleOpacity;
+  final Animation<double> genreOpacity;
+  final Animation<double> ratingOpacity;
 
   final double movieHeight;
   final Movie movie;
@@ -119,10 +185,7 @@ class MovieImageDetails extends ConsumerWidget {
             SizedBox(
               width: 100,
               height: movieHeight,
-              child: Image.network(
-                movie.posterPath,
-                fit: BoxFit.cover,
-              ),
+              child: NetworkFadingImage(path: movie.posterPath.toString()),
             ),
             const SizedBox(
               width: kMediumSpacing,
@@ -131,16 +194,25 @@ class MovieImageDetails extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(movie.title, style: theme.textTheme.headline6),
-                  Text(movie.genresCommaSeparated,
-                      style: theme.textTheme.bodyText2),
+                  FadeTransition(
+                      opacity: titleOpacity,
+                      child:
+                          Text(movie.title, style: theme.textTheme.headline6)),
+                  FadeTransition(
+                    opacity: genreOpacity,
+                    child: Text(movie.genresCommaSeparated,
+                        style: theme.textTheme.bodyText2),
+                  ),
                   Row(
                     children: [
-                      Text(
-                        movie.voteAverage.toString(),
-                        style: theme.textTheme.bodyText2?.copyWith(
-                            color: theme.textTheme.bodyText2?.color
-                                ?.withOpacity(0.62)),
+                      FadeTransition(
+                        opacity: ratingOpacity,
+                        child: Text(
+                          movie.voteAverage.toString(),
+                          style: theme.textTheme.bodyText2?.copyWith(
+                              color: theme.textTheme.bodyText2?.color
+                                  ?.withOpacity(0.62)),
+                        ),
                       ),
                       const Icon(
                         Icons.star_rounded,
