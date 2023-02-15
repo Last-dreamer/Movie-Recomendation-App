@@ -1,16 +1,11 @@
-# movie_recomendation
+# movie recomendation app in flutter ...
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## inlcude animations, river pod 2.0 , error handling, with all  testing ....
+  
+  
+  ![Screenshot_1676484548](https://user-images.githubusercontent.com/29290992/219116637-b8a517ec-8296-4d9d-8a6c-b4e870b20029.png)
+  
+  
+  ![Screenshot_1676482355](https://user-images.githubusercontent.com/29290992/219116705-bc4e44ff-a7d1-4f1a-8d26-f8fb78bd5ab9.png)
+  
+  ![Screenshot_1676484571](https://user-images.githubusercontent.com/29290992/219116782-6d55ac9c-be51-4176-a461-3886160a02c3.png)
